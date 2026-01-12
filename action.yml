@@ -1,0 +1,81 @@
+name: 'Install NoPorts'
+description: 'Installs NoPorts (npt & sshnp) on x64 or Arm64 Linux runners'
+branding:
+  icon: 'terminal'
+  color: 'blue'
+
+inputs:
+  version:
+    description: 'Version of NoPorts to install'
+    required: false
+    default: 'latest'
+  install-dir:
+    description: 'Directory to install binaries into'
+    required: false
+    default: '$HOME/.noports'
+  atkeys-secret:
+    description: 'The content of your .atKeys file (stored as a GitHub Secret)'
+    required: false
+  atsign:
+    description: 'The atSign associated with the atKeys (e.g. @alice)'
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - name: Detect Architecture
+      shell: bash
+      run: |
+        ARCH=$(uname -m)
+        if [ "$ARCH" = "x86_64" ]; then
+          echo "NP_ARCH=x64" >> $GITHUB_ENV
+        elif [[ "$ARCH" == "aarch64" || "$ARCH" == "arm64" ]]; then
+          echo "NP_ARCH=arm64" >> $GITHUB_ENV
+        else
+          echo "Unsupported architecture: $ARCH"
+          exit 1
+        fi
+
+    - name: Download and Install NoPorts
+      shell: bash
+      run: |
+        VERSION="${{ inputs.version }}"
+        INSTALL_PATH="${{ inputs.install-dir }}"
+        mkdir -p "$INSTALL_PATH"
+
+        if [ "$VERSION" = "latest" ]; then
+          URL="https://github.com/atsign-foundation/noports/releases/latest/download/sshnp-linux-${{ env.NP_ARCH }}.tgz"
+        else
+          URL="https://github.com/atsign-foundation/noports/releases/download/${VERSION}/sshnp-linux-${{ env.NP_ARCH }}.tgz"
+        fi
+
+        echo "Downloading NoPorts $VERSION for ${{ env.NP_ARCH }}..."
+        curl -fSL "$URL" -o noports.tgz
+        tar -xzf noports.tgz -C "$INSTALL_PATH" --strip-components=1
+        
+        # Add the directory to PATH
+        echo "$INSTALL_PATH" >> $GITHUB_PATH
+        rm noports.tgz
+
+    - name: Verify Installation
+      shell: bash
+      run: |
+        echo "NoPorts installed successfully at ${{ inputs.install-dir }}"
+        sshnp --help 2>&1 | grep --color=never Version
+
+    - name: Configure atKeys
+      if: ${{ inputs.atkeys-secret != '' && inputs.atsign != '' }}
+      shell: bash
+      run: |
+        # Create the standard atKeys directory
+        ATKEYS_DIR="$HOME/.atsign/keys"
+        mkdir -p "$ATKEYS_DIR"
+        
+        # Clean atsign name (remove @ if present for the filename)
+        CLEAN_ATSIGN=$(echo "${{ inputs.atsign }}" | sed 's/^@//')
+        
+        # Decode and save the secret
+        echo "${{ inputs.atkeys-secret }}" > "$ATKEYS_DIR/@${CLEAN_ATSIGN}_key.atKeys"
+        chmod 600 "$ATKEYS_DIR/@${CLEAN_ATSIGN}_key.atKeys"
+        
+        echo "Successfully configured atKeys for @${CLEAN_ATSIGN}"

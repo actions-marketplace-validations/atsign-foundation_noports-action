@@ -1,4 +1,8 @@
-<h1><a href="https://atsign.com#gh-light-mode-only"><img width=250px src="https://atsign.com/wp-content/uploads/2022/05/atsign-logo-horizontal-color2022.svg#gh-light-mode-only" alt="The Atsign Foundation"></a><a href="https://atsign.com#gh-dark-mode-only"><img width=250px src="https://atsign.com/wp-content/uploads/2023/08/atsign-logo-horizontal-reverse2022-Color.svg#gh-dark-mode-only" alt="The Atsign Foundation"></a>
+<!-- pyml disable-num-lines 4 md013,md033-->
+<h1><a href="https://atsign.com#gh-light-mode-only">
+   <img width=250px src="https://atsign.com/wp-content/uploads/2022/05/atsign-logo-horizontal-color2022.svg#gh-light-mode-only" alt="The Atsign Foundation"></a>
+<a href="https://atsign.com#gh-dark-mode-only">
+   <img width=250px src="https://atsign.com/wp-content/uploads/2023/08/atsign-logo-horizontal-reverse2022-Color.svg#gh-dark-mode-only" alt="The Atsign Foundation"></a></h1>
 
 # Contributing guidelines
 
@@ -36,22 +40,22 @@ configurations are documented
 
 To prepare your dedicated GitHub repository:
 
-1. Fork in GitHub <https://github.com/atsign-foundation/REPO>
-2. Clone *your forked repository* (e.g., `git clone git@github.com:yourname/REPO`)
+1. Fork in GitHub <https://github.com/atsign-foundation/noports-action>
+2. Clone *your forked repository* (e.g., `git clone git@github.com:yourname/noports-action`)
 3. Set your remotes as follows:
 
    ```sh
-   cd REPO
-   git remote add upstream git@github.com:atsign-foundation/REPO.git
+   cd noports-action
+   git remote add upstream git@github.com:atsign-foundation/noports-action.git
    git remote set-url upstream --push DISABLED
    ```
 
    Running `git remote -v` should give something similar to:
 
    ```text
-   origin  git@github.com:yourname/REPO.git (fetch)
-   origin  git@github.com:yourname/REPO.git (push)
-   upstream        git@github.com:atsign-foundation/REPO.git (fetch)
+   origin  git@github.com:yourname/noports-action.git (fetch)
+   origin  git@github.com:yourname/noports-action.git (push)
+   upstream        git@github.com:atsign-foundation/noports-action.git (fetch)
    upstream        DISABLED (push)
    ```
 
@@ -94,42 +98,14 @@ To prepare your dedicated GitHub repository:
 
 1. Open a new Pull Request to the main repository using your `trunk` branch
 
-## atLibrary release process
-
-The Atsign Foundation produces several widgets and libraries that the app developer
-can make use of to develop apps on atProtocol. These libraries are developed in
-Dart & Flutter and published to [pub.dev](https://pub.dev/publishers/atsign.org/packages).
-
-![alt_text](images/image1.png "Version flow")
-
-## Following the changes
-
-The Atsign Foundation publishes libraries and widgets to
-[https://pub.dev/publishers/atsign.org/packages](https://pub.dev/publishers/atsign.org/packages).
-Each of these libraries contains a tab called “Changelog” that shows various
-published versions and a short description of what changes that went in.
-
-![alt_text](images/image2.png "Changelog screenshot")
-
-Also the “Versions” tab shows the versions published in the reverse
-chronological order.
-
-![alt_text](images/image3.png "Versions screenshot")
-
 ## Reporting a bug
 
-The best place to start reporting bugs on the libraries published by
-atProtocol would be the “View/report issues” link available on
-[pub.dev](https://pub.dev/publishers/atsign.org/packages).
-
-![alt_text](images/image4.png "View/report issues highlight")
-
-Once the link is clicked, one should be redirected to GitHub repo where the
-issue can be reported by clicking on the “New issue” button.
+Open this repos
+[GitHub Issues](https://github.com/atsign-foundation/noports-action/issues)
 
 ![alt_text](images/image5.png "Issues list")
 
-Clicking on the  “New issue” button should take you to the screen to choose
+Clicking on the “New issue” button should take you to the screen to choose
 where the issue is a Bug or an Enhancement.
 
 ![alt_text](images/image6.png "Choose Bug report")
