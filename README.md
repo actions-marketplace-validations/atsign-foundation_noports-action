@@ -1,79 +1,88 @@
-<h1><a href="https://atsign.com#gh-light-mode-only"><img width=250px
-src="https://atsign.com/wp-content/uploads/2022/05/atsign-logo-horizontal-color2022.svg#gh-light-mode-only"
-alt="The Atsign Foundation"></a>
-<a href="https://atsign.com#gh-dark-mode-only"><img width=250px
-src="https://atsign.com/wp-content/uploads/2023/08/atsign-logo-horizontal-reverse2022-Color.svg#gh-dark-mode-only"
-alt="The Atsign Foundation"></a></h1>
+<!-- pyml disable-num-lines 4 md013,md033-->
+<h1><a href="https://atsign.com#gh-light-mode-only">
+   <img width=250px src="https://atsign.com/wp-content/uploads/2022/05/atsign-logo-horizontal-color2022.svg#gh-light-mode-only" alt="The Atsign Foundation"></a>
+<a href="https://atsign.com#gh-dark-mode-only">
+   <img width=250px src="https://atsign.com/wp-content/uploads/2023/08/atsign-logo-horizontal-reverse2022-Color.svg#gh-dark-mode-only" alt="The Atsign Foundation"></a></h1>
 
-# Sample README
+# NoPorts Action
 
-Open with intent - we welcome contributions - we want pull requests and to
-hear about issues.
+Use [NoPorts](https://www.noports.com/) within your GitHub Actions workflows.
 
-## Who is this for?
+This action installs NoPorts and optionally an atKeys file that will be used
+to make a connection.
 
-The README should be addressed to somebody who's never seen this before.
-But also don't assume that they're a novice.
+## Usage
 
-### Code user
+### Basic example
 
-Does this repo publish to [pub.dev](https://pub.dev) or similar?
-In which case the code user just needs a pointer there - e.g. [at_client on pub.dev](https://pub.dev/packages/at_client)
+This will install the latest release of the NoPorts binaries.
 
-### Contributor
+```yaml
+name: NoPorts Example
 
-This is the person who we want working with us here.
-[CONTRIBUTING.md](CONTRIBUTING.md) is going to have the detailed guidance
-on how to setup their tools, tests and how to make a pull request.
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
-## Why, What, How?
+jobs:
+  test-noports:
+    runs-on: ubuntu-latest # or ubuntu-24.04-arm
+    steps:
+      - name: Install NoPorts
+        uses: atsign-foundation/noports-action@v0.0.1
+          
+      - name: Run a command
+        run: sshnp --help
+```
 
-### Why?
+### Advanced example
 
-What is the purpose of this project?
+This example specifies a specific release version of NoPorts and adds the
+atKeys file for `@alice` that's stored in a GitHub Actions secret named
+`ATKEYS_ALICE`.
 
-### What?
+It then starts an NoPorts tunnel to a daemon using the `@bob`
+atSign via the Americas relay `@rv_am` to a device named `example123`
+connecting local port 1234 to remote port 1234.
 
-What is needed to get the project and its dependencies installed?
+```yaml
+name: NoPorts Example
 
-### How?
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
-How does this work? How is this used to fulfil its intended purpose?
+jobs:
+  noports-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup NoPorts and Authentication
+        uses: atsign-foundation/noports-action@v0.0.1
+        with:
+          version: 'v5.14.2' # Optional: defaults to latest
+          atsign: '@alice'
+          atkeys-secret: ${{ secrets.ATKEYS_ALICE }}
 
-## Checklist
+      - name: Establish a NoPorts tunnel
+        run: |
+          # The action placed the keys in the default ~/.atsign/keys/ location
+          npt -f alice -t bob -h rv_am -d example123 -l 1234 -p 1234
+```
 
-### Writing
+## Version History
 
-Does the writing flow, with proper grammar and correct spelling?
+### v0.1
 
-### Links
+* Initial version.
 
-Are the links to external resources correct?
-Are the links to other parts of the project correct
-(beware stuff carried over from previous repos where the
-project might have lived during earlier development)?
+## LICENSE
 
-### Description
-
-Has the Description field been filled out?
-
-### Acknowledgement/Attribution
-
-Have we correctly acknowledged the work of others (and their Trademarks etc.)
-where appropriate (per the conditions of their LICENSE?
-
-### LICENSE
-
-Which LICENSE are we using?  
-Is the LICENSE(.md) file present?  
-Does it have the correct dates, legal entities etc.?
+Licensed under the BSD 3 clause [LICENSE](LICENSE)
 
 ## Maintainers
 
-Who created this?  
-
-Do they have complete GitHub profiles?  
-
-How can they be contacted?  
-
-Who is going to respond to pull requests?  
+This project was created by [@cpswan](https://github.com/cpswan/)
