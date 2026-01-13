@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest # or ubuntu-24.04-arm
     steps:
       - name: Install NoPorts
-        uses: atsign-foundation/noports-action@v0.0.1
+        uses: atsign-foundation/noports-action@v1.0.0
           
       - name: Run a command
         run: sshnp --help
