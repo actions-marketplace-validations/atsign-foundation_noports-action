@@ -61,7 +61,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Setup NoPorts and Authentication
-        uses: atsign-foundation/noports-action@v0.0.1
+        uses: atsign-foundation/noports-action@v1.0.0
         with:
           version: 'v5.14.2' # Optional: defaults to latest
           atsign: '@alice'
@@ -70,10 +70,18 @@ jobs:
       - name: Establish a NoPorts tunnel
         run: |
           # The action placed the keys in the default ~/.atsign/keys/ location
-          npt -f alice -t bob -r rv_am -d example123 -l 1234 -p 1234
+          # Start npt in the background and wait for 'npt is listening'
+          nohup npt -f alice -t bob -r rv_am -d example123 -l 1234 -p 1234 \
+            > npt.log 2> npt.err < /dev/null &
+          tail -f npt.err | grep -m 1 "npt is listening"
 ```
 
 ## Version History
+
+### v1.0.0
+
+* Production ready
+* Example updated to show npt running in the background for subsequent steps
 
 ### v0.0.2
 
