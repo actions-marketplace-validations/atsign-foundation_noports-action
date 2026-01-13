@@ -70,12 +70,17 @@ jobs:
       - name: Establish a NoPorts tunnel
         run: |
           # The action placed the keys in the default ~/.atsign/keys/ location
-          npt -f alice -t bob -h rv_am -d example123 -l 1234 -p 1234
+          npt -f alice -t bob -r rv_am -d example123 -l 1234 -p 1234
 ```
 
 ## Version History
 
-### v0.1
+### v0.0.2
+
+* ' instead of " for passing atKeys file from input to file
+* Correct flag for relay in advanced example
+
+### v0.0.1
 
 * Initial version.
 

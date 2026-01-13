@@ -75,7 +75,7 @@ runs:
         CLEAN_ATSIGN=$(echo "${{ inputs.atsign }}" | sed 's/^@//')
         
         # Decode and save the secret
-        echo "${{ inputs.atkeys-secret }}" > "$ATKEYS_DIR/@${CLEAN_ATSIGN}_key.atKeys"
+        echo '${{ inputs.atkeys-secret }}' > "$ATKEYS_DIR/@${CLEAN_ATSIGN}_key.atKeys"
         chmod 600 "$ATKEYS_DIR/@${CLEAN_ATSIGN}_key.atKeys"
         
         echo "Successfully configured atKeys for @${CLEAN_ATSIGN}"
